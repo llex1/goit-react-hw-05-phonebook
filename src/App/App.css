@@ -1,0 +1,46 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+.filterAlert{
+  color: dodgerblue;
+  font-weight: 700;
+}
+.logo-appear{
+  transform: translateX(-200px);
+  opacity: 0;
+ transition: 500ms linear;
+}
+.logo-appear-active{
+  transform: translateX(0);
+  opacity: 1;
+}
+.alert{
+  position: fixed;
+  padding: 10px;
+  left: 30px;
+  top: 5vh;
+  width: 15em;
+  height: 3em;
+  background-color: ghostwhite;
+  border: 1px solid rgb(131, 131, 131);
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgb(153, 153, 153);
+  transition: 250ms linear;
+}
+.alert-enter{
+  transform: scale(0);
+  opacity: 0;
+}
+.alert-enter-active{
+  transform: scale(1);
+  opacity: 1;
+}
+.alert-exit{
+  transform: scale(1);
+  opacity: 1;
+}
+.alert-exit-active{
+  transform: scale(0);
+  opacity: 0;
+}
