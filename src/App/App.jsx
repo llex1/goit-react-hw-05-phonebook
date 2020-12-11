@@ -1,147 +1,129 @@
-import React, { Fragment, Component } from "react";
-import {CSSTransition} from "react-transition-group"
-import { v4 as uuid } from "uuid";
+import React, { Component } from "react";
+import { CSSTransition } from "react-transition-group";
 
-//jsx modules
-import ContactForm from "./components/ContactForm";
+//jsx module
+import Alert from "./components/Alert";
+import Header from "./components/Header";
+import ContactAdd from "./components/ContactAdd";
+import ContactShow from "./components/ContactShow";
 import Filter from "./components/Filter";
-import ContactList from "./components/ContactList";
 
-//states
-import phoneBookState from "./data/phoneBook";
-
-// css
+//style
 import "./App.css";
 
 class App extends Component {
-  state = phoneBookState;
+  state = {
+    contacts: [],
+    filter: "",
+    alert: false,
+    alertMessage: "",
+  };
 
-  componentDidMount() {
-    this.setState((state) => {
-      if (localStorage.getItem("contacts")) {
-        return {
-          contacts: [...JSON.parse(localStorage.getItem("contacts"))],
-        };
-      } else {
-        return {
-          contacts: [],
-        };
-      }
-    });
-  }
-  componentDidUpdate() {
-    localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
-  }
-
-  addContact = (event) => {
-    event.preventDefault();
-    const currentContacts = this.state.contacts.map((el) => el.name);
-    if (currentContacts.includes(event.target.contactName.value)) {
-      this.setState((state)=>{
-        return {
-          alert: true
+  globalStateControl = ({ id, name, number }, marker) => {
+    switch (marker) {
+      case "ADD":
+        if (name && this.state.contacts.map((el) => el.name).includes(name)) {
+          console.log("Такий контакт вже існує!", "FROM APP");
+          this.setState((state) => {
+            return {
+              alert: true,
+              alertMessage: "Такий контакт вже існує!",
+            };
+          });
+          setTimeout(() => {
+            this.setState((state) => {
+              return {
+                alert: false,
+                alertMessage: "",
+              };
+            });
+          }, 4000);
+        } else {
+          this.setState((state) => {
+            return {
+              contacts: [...state.contacts, { id, name, number }],
+            };
+          });
         }
-      })
-      setTimeout(()=>{
-        this.setState((state)=>{
-          return {
-            alert: false
+        break;
+      case "DELETE":
+        let idx = 0;
+        this.state.contacts.forEach((el, index) => {
+          if (el.id === id) {
+            idx = index;
           }
-        })
-      }, 4000)
-      // alert("Такий контакт вже існує!");
-    } else {
-      this.setState((state) => {
-        const newContact = [
-          {
-            id: uuid(),
-            name: event.target.contactName.value,
-            number: event.target.contactNumber.value,
-          },
-        ];
-        return {
-          contacts: [...state.contacts, ...newContact],
-        };
-      });
-    }
-  };
-  deleteContact = (event) => {
-    const findElement = this.state.contacts.filter(
-      (el) => el.id === event.target.id
-    );
-    const indexOfFindElement = this.state.contacts.indexOf(findElement[0]);
-    const newContactArray = [...this.state.contacts];
-    newContactArray.splice(indexOfFindElement, 1);
-    this.setState((state) => {
-      return {
-        contacts: [...newContactArray],
-      };
-    });
-    //аналогічно для фільтра, якщо він не пустий
-    if (this.state.filter.length) {
-      const findElement_F = this.state.filter.filter(
-        (el) => el.id === event.target.id
-      );
-      const indexOfFindElement_F = this.state.filter.indexOf(findElement_F[0]);
-      const newContactArray_F = [...this.state.filter];
-      newContactArray_F.splice(indexOfFindElement_F, 1);
-      this.setState((state) => {
-        return {
-          filter: [...newContactArray_F],
-        };
-      });
-    }
-  };
-
-  filterContact = (inputValue) => {
-    const filterElement = this.state.contacts.filter((el) =>
-      el.name.toLowerCase().includes(inputValue.toLowerCase())
-    );
-    if (inputValue && !Object.keys(filterElement).length) {
-      this.setState((state) => {
-        return {
-          filter: -1,
-        };
-      });
-    } else {
-      this.setState((state) => {
-        return {
-          filter: [...filterElement],
-        };
-      });
+        });
+        const newContacts = [...this.state.contacts];
+        newContacts.splice(idx, 1);
+        this.setState((state) => {
+          return {
+            contacts: [...newContacts],
+          };
+        });
+        break;
+      case "FILTER":
+        if (name) {
+          const filter = [];
+          this.state.contacts.forEach((el) => {
+            if (el.name.includes(name)) {
+              filter.push(el);
+            }
+            return {
+              filter,
+            };
+          });
+          this.setState((state) => {
+            return {
+              filter: [...filter],
+            };
+          });
+        } else {
+          this.setState((state) => {
+            return {
+              filter: [...state.filter.splice(0)],
+            };
+          });
+        }
+        break;
+      default:
+        console.log("can't parth marker");
     }
   };
 
   render() {
-    let dataOut;
-    if (typeof this.state.filter === "number") {
-      dataOut = <p className="filterAlert">пошук не дав результатів</p>;
-    } else {
-      dataOut = (
-        <ContactList
-          data={
-            this.state.filter.length > 0
-              ? this.state.filter
-              : this.state.contacts
-          }
-          deleteContact={this.deleteContact}
-        />
-      );
-    }
-
     return (
-      <Fragment>
-        <CSSTransition in={true} appear={true} classNames="logo" timeout={500} unmountOnExit>
-        <h1>Phonebook</h1>
+      <div className="phonebook">
+        <CSSTransition
+          in={this.state.alert}
+          classNames="alert"
+          timeout={300}
+        >
+          <Alert text={this.state.alertMessage} />
         </CSSTransition>
-        <CSSTransition in={this.state.alert}  classNames="alert" timeout={250} unmountOnExit>
-        <div className="alert">Такий контакт вже існує!</div>
+        <CSSTransition
+          in={true}
+          appear={true}
+          classNames="header"
+          timeout={500}
+          unmountOnExit
+        >
+          <Header />
         </CSSTransition>
-        <ContactForm addContact={this.addContact} />
-        <h2>Contacts</h2>
-        <Filter filterContact={this.filterContact} />
-        {dataOut}
-      </Fragment>
+        <ContactAdd globalStateControl={this.globalStateControl} />
+        <ContactShow
+          globalStateControl={this.globalStateControl}
+          globalState={this.state}
+        >
+          <CSSTransition
+            in={this.state.contacts.length > 1}
+            classNames="filter"
+            timeout={250}
+            unmountOnExit
+          >
+            <Filter globalStateControl={this.globalStateControl} />
+          </CSSTransition>
+        </ContactShow>
+      </div>
     );
   }
 }

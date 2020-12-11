@@ -1,27 +1,36 @@
 import React, { Component } from "react";
-import styles from "./Filter.module.css";
+
+import "./Filter.css";
 
 class Filter extends Component {
   state = {
-    inputValue: "",
+    value: "",
   };
-  enableFilter = (event) => {
-    this.setState({
-      inputValue: event.target.value,
+
+  formControl = (event) => {
+    this.setState((state) => {
+      return {
+        value: event.target.value,
+      };
     });
-    this.props.filterContact(event.target.value);
   };
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.state.value);
+    if (this.state.value !== prevState.value) {
+      this.props.globalStateControl({ name: this.state.value }, "FILTER");
+    }
+  }
 
   render() {
     return (
-      <div className={styles.filterForm}>
-        <label htmlFor="findContact">Find contacts by name</label>
+      <div className="filter">
+        <label htmlFor="filter">Filter</label>
         <input
+          id="filter"
           type="text"
-          name="findContact"
-          id="findContact"
-          value={this.state.inputValue}
-          onChange={this.enableFilter}
+          name="filter"
+          value={this.state.value}
+          onChange={this.formControl}
         />
       </div>
     );
