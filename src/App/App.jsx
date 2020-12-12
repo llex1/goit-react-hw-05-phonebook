@@ -37,7 +37,7 @@ class App extends Component {
               };
             });
           }, 4000);
-        } else {
+        } else if(name) {
           this.setState((state) => {
             return {
               contacts: [...state.contacts, { id, name, number }],
