@@ -23,7 +23,6 @@ class App extends Component {
     switch (marker) {
       case "ADD":
         if (name && this.state.contacts.map((el) => el.name).includes(name)) {
-          console.log("Такий контакт вже існує!", "FROM APP");
           this.setState((state) => {
             return {
               alert: true,
@@ -47,6 +46,21 @@ class App extends Component {
         }
         break;
       case "DELETE":
+        if(this.state.filter.length){
+          let idx = 0;
+          this.state.filter.forEach((el, index) => {
+            if (el.id === id) {
+              idx = index;
+            }
+          });
+          const newFilters = [...this.state.filter];
+          newFilters.splice(idx, 1);
+          this.setState((state) => {
+            return {
+              filter: [...newFilters],
+            };
+          });
+        }
         let idx = 0;
         this.state.contacts.forEach((el, index) => {
           if (el.id === id) {
@@ -62,8 +76,8 @@ class App extends Component {
         });
         break;
       case "FILTER":
+        const filter = [];
         if (name) {
-          const filter = [];
           this.state.contacts.forEach((el) => {
             if (el.name.includes(name)) {
               filter.push(el);
@@ -80,7 +94,7 @@ class App extends Component {
         } else {
           this.setState((state) => {
             return {
-              filter: [...state.filter.splice(0)],
+              filter: [...filter],
             };
           });
         }
@@ -97,6 +111,7 @@ class App extends Component {
           in={this.state.alert}
           classNames="alert"
           timeout={300}
+          unmountOnExit
         >
           <Alert text={this.state.alertMessage} />
         </CSSTransition>

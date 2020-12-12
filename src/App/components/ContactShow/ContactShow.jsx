@@ -17,7 +17,6 @@ class ContactShow extends Component {
 
   contactList = () => {
     let show = null;
-    console.log(this.props.globalState.filter.length);
     if (this.props.globalState.filter.length) {
       show = this.props.globalState.filter;
     } else {

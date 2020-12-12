@@ -7,7 +7,7 @@ class ContactAdd extends Component {
     valueName: "",
     valueNumder: "",
   };
-  formControl = (event) => {
+  handleChange = (event) => {
     switch (event.target.name) {
       case "name":
         this.setState((state) => {
@@ -27,7 +27,7 @@ class ContactAdd extends Component {
         console.log("error form-name");
     }
   };
-  formSubmit = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const objOut = 
       {
@@ -46,7 +46,7 @@ class ContactAdd extends Component {
 
   render() {
     return (
-      <form className={styles.form} onSubmit={this.formSubmit}>
+      <form className={styles.form} onSubmit={this.handleSubmit}>
         <label className={styles.label} htmlFor="name">Contact Name</label>
         <input
           className={styles.input}
@@ -54,7 +54,7 @@ class ContactAdd extends Component {
           name="name"
           id="name"
           value={this.state.valueName}
-          onChange={this.formControl}
+          onChange={this.handleChange}
         />
         <label className={styles.label} htmlFor="number">Contact Number</label>
         <input
@@ -63,7 +63,7 @@ class ContactAdd extends Component {
           name="number"
           id="number"
           value={this.state.valueNumder}
-          onChange={this.formControl}
+          onChange={this.handleChange}
         />
         <button className={styles.btn} type="submit">new contact</button>
       </form>

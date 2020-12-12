@@ -7,19 +7,14 @@ class Filter extends Component {
     value: "",
   };
 
-  formControl = (event) => {
-    this.setState((state) => {
+  handleChange = async (event) => {
+    await this.setState((state) => {
       return {
         value: event.target.value,
       };
-    });
+    })
+    this.props.globalStateControl({ name: this.state.value }, "FILTER");
   };
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.state.value);
-    if (this.state.value !== prevState.value) {
-      this.props.globalStateControl({ name: this.state.value }, "FILTER");
-    }
-  }
 
   render() {
     return (
@@ -30,7 +25,7 @@ class Filter extends Component {
           type="text"
           name="filter"
           value={this.state.value}
-          onChange={this.formControl}
+          onChange={this.handleChange}
         />
       </div>
     );
