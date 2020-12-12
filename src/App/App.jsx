@@ -18,6 +18,8 @@ class App extends Component {
     alert: false,
     alertMessage: "",
   };
+  
+  delayToCloseAlert = null;
 
   globalStateControl = ({ id, name, number }, marker) => {
     switch (marker) {
@@ -26,18 +28,19 @@ class App extends Component {
           this.setState((state) => {
             return {
               alert: true,
-              alertMessage: "Такий контакт вже існує!",
+              alertMessage: "Excuse, but You already have this contact in your base.",
             };
           });
-          setTimeout(() => {
+          clearTimeout(this.delayToCloseAlert);
+          this.delayToCloseAlert = setTimeout(() => {
             this.setState((state) => {
               return {
                 alert: false,
                 alertMessage: "",
               };
-            });
-          }, 4000);
-        } else if(name) {
+            })
+          }, 3000);
+        } else if (name) {
           this.setState((state) => {
             return {
               contacts: [...state.contacts, { id, name, number }],
@@ -46,7 +49,7 @@ class App extends Component {
         }
         break;
       case "DELETE":
-        if(this.state.filter.length){
+        if (this.state.filter.length) {
           let idx = 0;
           this.state.filter.forEach((el, index) => {
             if (el.id === id) {

@@ -8,6 +8,9 @@
   background-color: #EBDEF0;
   border: 1px solid #7D3C98;
   border-radius: 8px;
+
+  overflow: hidden;
+
   transform: translateX(-50%) scale(0);
   transition: 300ms linear;
 }
@@ -23,11 +26,11 @@
   transform: translateX(-50%) scale(1, 1) translateY(0);
   opacity: 1;
 }
-.alert-exit-done{
+.alert-exit-active{
   transform: translateX(-50%) scale(1, 0) translateY(-100%);
   opacity: 0.8;
 }
 .alert-text{
   font-weight: 700;
-  color: #BA4A00;
+  color: #7D3C98;
 }

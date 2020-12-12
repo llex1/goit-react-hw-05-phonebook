@@ -49,19 +49,25 @@ class ContactAdd extends Component {
       <form className={styles.form} onSubmit={this.handleSubmit}>
         <label className={styles.label} htmlFor="name">Contact Name</label>
         <input
+          required
           className={styles.input}
           type="text"
           name="name"
           id="name"
+          placeholder='name'
+          autoComplete = "off"
           value={this.state.valueName}
           onChange={this.handleChange}
         />
         <label className={styles.label} htmlFor="number">Contact Number</label>
         <input
           className={styles.input}
-          type="text"
+          type="tel"
           name="number"
           id="number"
+          placeholder='063-333-4444'
+          autoComplete = "off"
+          pattern="[0-9\W]*"
           value={this.state.valueNumder}
           onChange={this.handleChange}
         />
