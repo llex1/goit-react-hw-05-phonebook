@@ -59,7 +59,7 @@ const globalStateControl = function({ id, name, number }, marker){
       const filter = [];
       if (name) {
         this.state.contacts.forEach((el) => {
-          if (el.name.includes(name)) {
+          if (el.name.toLowerCase().includes(name.toLowerCase())) {
             filter.push(el);
           }
           return {
