@@ -12,7 +12,7 @@
   overflow: hidden;
 
   transform: translateX(-50%) scale(0);
-  transition: 300ms linear;
+  transition: 250ms linear;
 }
 .alert-enter{
   transform: translateX(-50%) scale(1, 0) translateY(-100%);
