@@ -1,7 +1,7 @@
 const globalStateControl = function({ id, name, number }, marker){
   switch (marker) {
     case "ADD":
-      if (name && this.state.contacts.map((el) => el.name).includes(name)) {
+      if (name && this.state.contacts.map((el) => el.name.toLowerCase()).includes(name.toLowerCase())) {
         this.setState((state) => {
           return {
             alert: true,

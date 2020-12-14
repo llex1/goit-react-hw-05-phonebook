@@ -24,16 +24,20 @@ class ContactShow extends Component {
     }
     return show.map((el, indx) => {
       return (
-        <CSSTransition key={indx} timeout={250} classNames="contact-show-list-item">
-        <li key={el.id} className="contact-show-list-item">
-          <p className="contact-show-list-text">
-            <span>{el.name}</span>
-            <span>{el.number}</span>
-          </p>
-          <button data-id={el.id} onClick={this.deleteContact}>
-            delete
-          </button>
-        </li>
+        <CSSTransition
+          key={indx}
+          timeout={250}
+          classNames="contact-show-list-item"
+        >
+          <li key={el.id} className="contact-show-list-item">
+            <p className="contact-show-list-text">
+              <span>{el.name}</span>
+              <span>{el.number}</span>
+            </p>
+            <button data-id={el.id} onClick={this.deleteContact}>
+              delete
+            </button>
+          </li>
         </CSSTransition>
       );
     });

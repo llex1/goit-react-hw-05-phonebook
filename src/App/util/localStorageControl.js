@@ -1,6 +1,4 @@
 const localStorageControl = function(boolen) {
-  console.log(boolen, 'boolens');
-  console.log(this.state.contacts, 'THISSTATE');
   if(!boolen && localStorage.getItem('contacts')){
     this.setState((state) => {
       return {
